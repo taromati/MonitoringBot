@@ -44,6 +44,12 @@ def bot_proc(prev_status: bool, domain: str, path: str):
 
 
 if __name__ == "__main__":
+    print("BOT_ID : " + BOT_ID)
+    print("SLACK_BOT_TOKEN : " + SLACK_BOT_TOKEN)
+    print("CHANNEL : " + CHANNEL)
+    print("DEV_DOMAIN : " + DEV_DOMAIN)
+    print("LIVE_DOMAIN : " + LIVE_DOMAIN)
+    print("CHECK_PATH : " + CHECK_PATH)
     try:
         send_message("Start watching server")
 
