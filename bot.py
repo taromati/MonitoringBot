@@ -34,12 +34,18 @@ def bot_proc(client: SlackClient, prev_status: bool, domain: str, path: str):
 
 if __name__ == "__main__":
     BOT_ID = os.environ.get("BOT_ID")
+    print("BOT_ID: " + BOT_ID)
     SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN")
+    print("SLACK_BOT_TOKEN: " + SLACK_BOT_TOKEN)
     CHANNEL = os.environ.get("CHANNEL")
+    print("CHANNEL: " + CHANNEL)
 
     DEV_DOMAIN = os.environ.get("DEV_DOMAIN")
+    print("DEV_DOMAIN: " + DEV_DOMAIN)
     LIVE_DOMAIN = os.environ.get("LIVE_DOMAIN")
+    print("LIVE_DOMAIN: " + LIVE_DOMAIN)
     CHECK_PATH = os.environ.get("CHECK_PATH")
+    print("CHECK_PATH: " + CHECK_PATH)
 
     if BOT_ID is None and SLACK_BOT_TOKEN is None and CHANNEL is None and DEV_DOMAIN is None and LIVE_DOMAIN is None and CHECK_PATH is None:
         print("error")
