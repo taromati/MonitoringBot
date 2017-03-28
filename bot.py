@@ -42,6 +42,7 @@ if __name__ == "__main__":
     CHECK_PATH = os.environ.get("CHECK_PATH")
 
     if BOT_ID is None and SLACK_BOT_TOKEN is None and CHANNEL is None and DEV_DOMAIN is None and LIVE_DOMAIN is None and CHECK_PATH is None:
+        print("error")
         exit(1)
 
     slack_client = SlackClient(SLACK_BOT_TOKEN)
