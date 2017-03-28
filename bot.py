@@ -33,6 +33,8 @@ def bot_proc(client: SlackClient, prev_status: bool, domain: str, path: str):
 
 
 if __name__ == "__main__":
+    print("main start")
+    
     BOT_ID = os.environ.get("BOT_ID")
     print("BOT_ID: " + BOT_ID)
     SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN")
