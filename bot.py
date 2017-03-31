@@ -1,5 +1,6 @@
 import http.client
 import os
+import socket
 from slackclient import SlackClient
 from time import sleep
 
@@ -9,11 +10,15 @@ def check(domain: str,
           path: str = "/",
           port: int = http.client.HTTP_PORT,
           timeout: int = 10) -> (bool, int):
-    conn = http.client.HTTPSConnection(domain, port, timeout=timeout)
-    conn.request(method, path)
-    response = conn.getresponse()
-    print(response.status)
-    return response.status == http.HTTPStatus.OK, response.status
+    try:
+        conn = http.client.HTTPSConnection(domain, port, timeout=timeout)
+        conn.request(method, path)
+        response = conn.getresponse()
+        print(response.status)
+        return response.status == http.HTTPStatus.OK, response.status
+    except socket.timeout:
+        print("connect timed out")
+        return False, -1
 
 
 def send_message(client: SlackClient, message: str):
