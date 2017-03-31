@@ -25,8 +25,9 @@ def send_message(client: SlackClient, message: str):
 
 def bot_proc(client: SlackClient, prev_status: bool, domain: str, path: str):
     (result, status_code) = check(domain, path=path, port=http.client.HTTPS_PORT)
-    if result != prev_status:
-        text = "[ " + domain + " ] is " + (result and "alive" or "dead, [" + status_code + "]")
+    if prev_status is None or result != prev_status:
+        text = "[ " + domain + " ] is " \
+               + (result and "alive" or "dead:[" + str(status_code) + "], Fix it immediately!")
         send_message(client, text)
 
     return result
@@ -34,20 +35,14 @@ def bot_proc(client: SlackClient, prev_status: bool, domain: str, path: str):
 
 if __name__ == "__main__":
     print("main start")
-    
+
     BOT_ID = os.environ.get("BOT_ID")
-    print("BOT_ID: " + BOT_ID)
     SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN")
-    print("SLACK_BOT_TOKEN: " + SLACK_BOT_TOKEN)
     CHANNEL = os.environ.get("CHANNEL")
-    print("CHANNEL: " + CHANNEL)
 
     DEV_DOMAIN = os.environ.get("DEV_DOMAIN")
-    print("DEV_DOMAIN: " + DEV_DOMAIN)
     LIVE_DOMAIN = os.environ.get("LIVE_DOMAIN")
-    print("LIVE_DOMAIN: " + LIVE_DOMAIN)
     CHECK_PATH = os.environ.get("CHECK_PATH")
-    print("CHECK_PATH: " + CHECK_PATH)
 
     if BOT_ID is None and SLACK_BOT_TOKEN is None and CHANNEL is None and DEV_DOMAIN is None and LIVE_DOMAIN is None and CHECK_PATH is None:
         print("error")
@@ -56,8 +51,8 @@ if __name__ == "__main__":
     slack_client = SlackClient(SLACK_BOT_TOKEN)
 
     try:
-        dev_status = False
-        live_status = False
+        dev_status: bool = None
+        live_status: bool = None
 
         send_message(slack_client, "Start watching server")
 
@@ -65,5 +60,7 @@ if __name__ == "__main__":
             dev_status = bot_proc(slack_client, dev_status, DEV_DOMAIN, CHECK_PATH)
             live_status = bot_proc(slack_client, live_status, LIVE_DOMAIN, CHECK_PATH)
             sleep(10)
+    except Exception as err:
+        print(str(err))
     finally:
         send_message(slack_client, "I'm dying")
